@@ -26,7 +26,7 @@ function ResetPasswordForm() {
     setMessage('');
 
     if (password !== confirmPassword) {
-      setError('كلمات المرور غير متطابقة');
+      setError('Passwords do not match');
       return;
     }
 
@@ -34,12 +34,12 @@ function ResetPasswordForm() {
 
     try {
       await resetPassword(token, password);
-      setMessage('تم إعادة تعيين كلمة المرور بنجاح');
+      setMessage('Password reset successful');
       setTimeout(() => {
         router.push('/login');
       }, 2000);
     } catch (error) {
-      setError(error.message || 'حدث خطأ أثناء إعادة تعيين كلمة المرور');
+      setError(error.message || 'Error resetting password');
     } finally {
       setIsSubmitting(false);
     }
@@ -49,13 +49,13 @@ function ResetPasswordForm() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#f8f7f8]">
-      <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md" dir="rtl">
-        <h2 className="text-2xl font-semibold mb-6 text-[#998966]">إعادة تعيين كلمة المرور</h2>
+      <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
+        <h2 className="text-2xl font-semibold mb-6 text-[#998966]">Reset Password</h2>
         
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              كلمة المرور الجديدة
+              New Password
             </label>
             <input
               type="password"
@@ -69,7 +69,7 @@ function ResetPasswordForm() {
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              تأكيد كلمة المرور
+              Confirm Password
             </label>
             <input
               type="password"
@@ -100,7 +100,7 @@ function ResetPasswordForm() {
             }`}
             disabled={isSubmitting}
           >
-            {isSubmitting ? 'جاري الإرسال...' : 'إعادة تعيين كلمة المرور'}
+            {isSubmitting ? 'Submitting...' : 'Reset Password'}
           </button>
         </form>
       </div>
@@ -112,12 +112,12 @@ export default function ResetPasswordPage() {
   return (
     <Suspense fallback={
       <div className="min-h-screen flex items-center justify-center bg-[#f8f7f8]">
-        <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md text-center" dir="rtl">
-          جاري التحميل...
+        <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md text-center">
+          Loading...
         </div>
       </div>
     }>
       <ResetPasswordForm />
     </Suspense>
   );
-} 
+}

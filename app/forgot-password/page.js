@@ -18,10 +18,10 @@ export default function ForgotPasswordPage() {
 
     try {
       await forgotPassword(email);
-      setMessage('تم إرسال رابط إعادة تعيين كلمة المرور إلى بريدك الإلكتروني');
+      setMessage('Password reset link has been sent to your email');
       setEmail('');
     } catch (error) {
-      setError(error.message || 'حدث خطأ أثناء إرسال رابط إعادة التعيين');
+      setError(error.message || 'Error sending reset link');
     } finally {
       setIsSubmitting(false);
     }
@@ -29,13 +29,13 @@ export default function ForgotPasswordPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#f8f7f8]">
-      <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md" dir="rtl">
-        <h2 className="text-2xl font-semibold mb-6 text-[#998966]">نسيت كلمة المرور</h2>
+      <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md" dir="ltr">
+        <h2 className="text-2xl font-semibold mb-6 text-[#998966]">Forgot Password</h2>
         
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              البريد الإلكتروني
+              Email
             </label>
             <input
               type="email"
@@ -65,7 +65,7 @@ export default function ForgotPasswordPage() {
             }`}
             disabled={isSubmitting}
           >
-            {isSubmitting ? 'جاري الإرسال...' : 'إرسال رابط إعادة التعيين'}
+            {isSubmitting ? 'Sending...' : 'Send Reset Link'}
           </button>
 
           <div className="text-center mt-4">
@@ -73,11 +73,11 @@ export default function ForgotPasswordPage() {
               href="/login"
               className="text-[#998966] hover:underline"
             >
-              العودة إلى تسجيل الدخول
+              Back to Login
             </Link>
           </div>
         </form>
       </div>
     </div>
   );
-} 
+}

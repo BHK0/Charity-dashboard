@@ -2,13 +2,13 @@ import { Cairo } from "next/font/google";
 import "./globals.css";
 
 const cairo = Cairo({
-  subsets: ["arabic"],
+  subsets: ["latin"],
   display: "swap",
 });
 
 export const metadata = {
-  title: "إدارة الجهات",
-  description: "لوحة التحكم لإدارة الجهات",
+  title: "Organization Management",
+  description: "Control panel for managing organizations",
 };
 
 export default function RootLayout({ children }) {

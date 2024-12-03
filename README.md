@@ -1,36 +1,59 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Khair Charity Platform
 
-## Getting Started
+A full-stack Next.js application for managing charitable donations with separate interfaces for donors and administrators. The platform facilitates both monetary donations and date fruit donations, with comprehensive analytics and management capabilities.
 
-First, run the development server:
+## 🌟 Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### For Donors
+- Easy-to-use donation forms with customizable amounts
+- Mobile-responsive interface
+- Phone number validation
+- Support for multiple donation types (Monetary/Dates)
+- Real-time form validation
+- Anonymous donation option
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### For Administrators
+- Comprehensive dashboard for organization management
+- Detailed analytics and reporting
+- Export functionality for donations data (Excel/CSV)
+- User management system
+- Image upload capabilities
+- Date donations tracking system
+- Real-time statistics and visualizations
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## 🛠️ Technology Stack
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+- **Frontend**: Next.js 14, React, TailwindCSS, Framer Motion
+- **Backend**: Next.js API Routes, AWS Services
+- **Database**: Amazon DynamoDB
+- **Storage**: AWS S3, Vercel Blob Storage
+- **Authentication**: Custom JWT implementation
+- **Email**: AWS SES
+- **Styling**: TailwindCSS with custom configurations
+- **Charts**: Chart.js, Recharts
 
-## Learn More
+## 🔧 Core Dependencies
+{
+"next": "14.2.3",
+"react": "^18",
+"tailwindcss": "^3.4.1",
+"@aws-sdk/client-dynamodb": "^3.678.0",
+"@vercel/blob": "^0.25.1",
+"chart.js": "^4.4.5",
+"framer-motion": "^11.11.10"
+}
 
-To learn more about Next.js, take a look at the following resources:
+## 🚀 Getting Started
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. Clone the repository
+2. Install dependencies: `npm install`
+3. Set up environment variables (see `.env.example`)
+4. Start the development server: `npm run dev`
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## 🔐 Security Features
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- JWT-based authentication
+- Phone number validation
+- Rate limiting
+- Secure file uploads
+- Environment variable protection

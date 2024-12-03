@@ -7,7 +7,7 @@ import { createDonation } from '@/app/actions/donations';
 // Helper function to translate rate limit error messages
 const translateRateLimitError = (error) => {
   if (!error.includes('Too many requests')) return error;
-  return `عذراً، لقد تجاوزت الحد المسموح به من المحاولات. الرجاء المحاولة مرة أخرى بعد 5 دقائق.`;
+  return `Sorry, you have exceeded the allowed number of attempts. Please try again after 5 minutes.`;
 };
 
 // Phone number validation
@@ -64,14 +64,14 @@ export default function DonationForm({ organization }) {
     const newErrors = {};
     
     if (!formData.phoneNumber) {
-      newErrors.phoneNumber = 'رقم الجوال مطلوب';
+      newErrors.phoneNumber = 'Phone number is required';
     } else if (!validatePhoneNumber(formData.phoneNumber)) {
-      newErrors.phoneNumber = 'يجب أن يبدأ رقم الجوال بـ 05 وأن يتكون من 10 أرقام';
+      newErrors.phoneNumber = 'Phone number must start with 05 and be 10 digits long';
     }
 
     // Only show amount error if user has interacted with amount selection
     if (touched.amount && !formData.amount) {
-      newErrors.amount = 'الرجاء اختيار مبلغ البرع';
+      newErrors.amount = 'Please select a donation amount';
     }
 
     setErrors(newErrors);
@@ -110,14 +110,14 @@ export default function DonationForm({ organization }) {
     try {
       const orgId = organization.SK.split('#')[1];
       await createDonation(orgId, {
-        name: formData.name.trim() || 'مجهول',
+        name: formData.name.trim() || 'Anonymous',
         phoneNumber: formData.phoneNumber,
         amount: formData.amount
       });
       
       setFormData({ name: '', phoneNumber: '', amount: null });
       setTouched({});
-      alert('تم استلام طلب التبرع بنجاح!');
+      alert('Donation request received successfully!');
     } catch (error) {
       console.error('Error submitting donation:', error);
       setErrors(prev => ({
@@ -130,14 +130,14 @@ export default function DonationForm({ organization }) {
   };
 
   return (
-    <div className="max-w-md mx-auto bg-white rounded-lg shadow-lg p-6" dir="rtl">
+    <div className="max-w-md mx-auto bg-white rounded-lg shadow-lg p-6" dir="ltr">
       {/* Updated Logo Header Section with consistent spacing */}
       <div className="flex flex-col items-center mb-8">
         <div className="relative w-full flex justify-center">
           {/* Center container with fixed gap from separator */}
           <div className="relative flex items-center">
-            {/* Right Logo Container */}
-            <div className="w-[100px] flex justify-end"> {/* Fixed width container */}
+            {/* Left Logo Container */}
+            <div className="w-[100px] flex justify-start"> {/* Fixed width container */}
               <div className="relative w-[65px] h-[80px]">
                 <Image
                   src="/logoLong.png"
@@ -152,8 +152,8 @@ export default function DonationForm({ organization }) {
             {/* Separator Line */}
             <div className="h-16 w-px bg-gray-300 mx-4" /> {/* Fixed margin */}
 
-            {/* Left Logo Container */}
-            <div className="w-[100px] flex justify-start"> {/* Fixed width container */}
+            {/* Right Logo Container */}
+            <div className="w-[100px] flex justify-end"> {/* Fixed width container */}
               <div className="relative" style={{ width: orgLogoSize.width, height: orgLogoSize.height }}>
                 <Image
                   src={organization.logo}
@@ -182,11 +182,10 @@ export default function DonationForm({ organization }) {
           <input
             type="text"
             name="name"
-            placeholder="الاسم (اختياري)"
+            placeholder="Name (optional)"
             value={formData.name}
             onChange={handleInputChange}
-            className="w-full p-3 border rounded-lg text-right transition-colors focus:border-[#998966] focus:ring-1 focus:ring-[#998966]"
-            dir="rtl"
+            className="w-full p-3 border rounded-lg text-left transition-colors focus:border-[#998966] focus:ring-1 focus:ring-[#998966]"
           />
         </div>
 
@@ -195,24 +194,23 @@ export default function DonationForm({ organization }) {
             <input
               type="tel"
               name="phoneNumber"
-              placeholder="رقم الجوال"
+              placeholder="Phone Number"
               value={formData.phoneNumber}
               onChange={handleInputChange}
               onBlur={() => handleBlur('phoneNumber')}
-              className={`w-full p-3 border rounded-lg text-right transition-colors ${
+              className={`w-full p-3 border rounded-lg text-left transition-colors ${
                 errors.phoneNumber && touched.phoneNumber
                   ? 'border-red-500 focus:border-red-500 focus:ring-red-500'
                   : 'focus:border-[#998966] focus:ring-1 focus:ring-[#998966]'
               }`}
-              dir="rtl"
             />
             {formData.phoneNumber && (
-              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm">
+              <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm">
                 {validatePhoneNumber(formData.phoneNumber) ? (
-                  <span className="text-green-600">✓ رقم صحيح</span>
+                  <span className="text-green-600">✓ Valid number</span>
                 ) : (
                   <span className="text-gray-500">
-                    {10 - formData.phoneNumber.length} أرقام متبقية
+                    {10 - formData.phoneNumber.length} digits remaining
                   </span>
                 )}
               </span>
@@ -238,7 +236,7 @@ export default function DonationForm({ organization }) {
                     : 'bg-gray-100 text-gray-800 hover:shadow-md border-2 border-[#998966]'
                 }`}
               >
-                {amount} ريال
+                {amount} SAR
               </button>
             ))}
           </div>
@@ -257,15 +255,15 @@ export default function DonationForm({ organization }) {
           }`}
         >
           {isSubmitting ? (
-            <div className="flex items-center justify-center space-x-reverse space-x-2">
+            <div className="flex items-center justify-center space-x-2">
               <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
               </svg>
-              <span>جاري التنفيذ...</span>
+              <span>Processing...</span>
             </div>
           ) : (
-            'تبرع الآن'
+            'Donate Now'
           )}
         </button>
       </div>

@@ -45,19 +45,19 @@ export default function DateDonationForm() {
     const newErrors = {};
     
     if (!formData.donationType) {
-      newErrors.donationType = 'الرجاء اختيار نوع التبرع';
+      newErrors.donationType = 'Please select donation type';
     }
     
     if (!formData.quantity || formData.quantity <= 0) {
-      newErrors.quantity = 'الرجاء إدخال كمية صحيحة';
+      newErrors.quantity = 'Please enter a valid quantity';
     }
     
     if (!formData.phoneNumber || !/^05\d{8}$/.test(formData.phoneNumber)) {
-      newErrors.phoneNumber = 'الرجاء إدخال رقم جوال صحيح';
+      newErrors.phoneNumber = 'Please enter a valid mobile number';
     }
     
     if (images.length === 0) {
-      newErrors.images = 'الرجاء إضافة صورة واحدة على الأقل';
+      newErrors.images = 'Please add at least one image';
     }
 
     setErrors(newErrors);
@@ -70,14 +70,14 @@ export default function DateDonationForm() {
     
     const validFiles = files.filter(file => {
       if (file.size > maxSize) {
-        toast.error(`الملف ${file.name} كبير جداً. الحد الأقصى 5 ميجابايت`);
+        toast.error(`File ${file.name} is too large. Maximum size is 5MB`);
         return false;
       }
       return true;
     });
 
     if (validFiles.length + images.length > 4) {
-      toast.error('يمكنك رفع 4 صور كحد أقصى');
+      toast.error('You can upload up to 4 images');
       return;
     }
 
@@ -140,7 +140,7 @@ export default function DateDonationForm() {
       });
 
       if (!uploadResponse.ok) {
-        throw new Error('فشل رفع الصور');
+        throw new Error('Failed to upload images');
       }
 
       const { imageUrls } = await uploadResponse.json();
@@ -148,7 +148,7 @@ export default function DateDonationForm() {
       // Create donation with image URLs
       await createDateDonation({
         ...formData,
-        donorName: formData.donorName.trim() || 'فاعل خير',
+        donorName: formData.donorName.trim() || 'Anonymous',
         images: imageUrls,
       });
 
@@ -161,7 +161,7 @@ export default function DateDonationForm() {
       
     } catch (error) {
       console.error('Error submitting form:', error);
-      toast.error('حدث خطأ أثناء إرسال التبرع');
+      toast.error('An error occurred while submitting the donation');
     } finally {
       setIsSubmitting(false);
     }
@@ -187,8 +187,8 @@ export default function DateDonationForm() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
               </svg>
             </motion.div>
-            <h2 className="text-2xl font-bold text-gray-800">تم استلام التبرع بنجاح</h2>
-            <p className="text-gray-600">شكراً لك على تبرعك</p>
+            <h2 className="text-2xl font-bold text-gray-800">Donation Received Successfully</h2>
+            <p className="text-gray-600">Thank you for your donation</p>
           </motion.div>
         ) : (
           <motion.form 
@@ -211,16 +211,16 @@ export default function DateDonationForm() {
                 />
               </div>
               <div>
-                <h1 className="text-xl sm:text-2xl font-bold text-[#998966]">التمور المستلمة</h1>
-                <p className="text-gray-600">لعام 2024</p>
+                <h1 className="text-xl sm:text-2xl font-bold text-[#998966]">Received Dates</h1>
+                <p className="text-gray-600">For Year 2024</p>
               </div>
             </div>
 
             {/* Donation Type */}
             <div className="space-y-2">
-              <label className="block text-lg font-medium text-gray-700">نوع التبرع</label>
+              <label className="block text-lg font-medium text-gray-700">Donation Type</label>
               <div className="grid grid-cols-3 gap-3">
-                {['زكاة', 'صدقة', 'هبة'].map((type) => (
+                {['Zakat', 'Sadaqah', 'Gift'].map((type) => (
                   <motion.button
                     key={type}
                     whileHover={{ scale: 1.02 }}
@@ -242,10 +242,10 @@ export default function DateDonationForm() {
               )}
             </div>
 
-            {/* Replace Donor Type section with simple input */}
+            {/* Donor Name */}
             <div className="space-y-2">
               <label className="block text-lg font-medium text-gray-700">
-                اسم المتبرع (اختياري)
+                Donor Name (Optional)
               </label>
               <input
                 type="text"
@@ -254,7 +254,7 @@ export default function DateDonationForm() {
                   ...prev, 
                   donorName: e.target.value 
                 }))}
-                placeholder="سيتم تسجيله كفاعل خير في حال تركه فارغاً"
+                placeholder="Will be recorded as Anonymous if left empty"
                 className="w-full p-3 rounded-lg border-2 border-gray-200 focus:border-[#998966] outline-none"
               />
             </div>
@@ -262,7 +262,7 @@ export default function DateDonationForm() {
             {/* Quantity */}
             <div className="space-y-2">
               <label className="block text-lg font-medium text-gray-700">
-                الكمية (بالكيلو)
+                Quantity (KG)
               </label>
               <input
                 type="number"
@@ -283,7 +283,7 @@ export default function DateDonationForm() {
             {/* Phone Number */}
             <div className="space-y-2">
               <label className="block text-lg font-medium text-gray-700">
-                رقم الجوال
+                Mobile Number
               </label>
               <div className="relative">
                 <input
@@ -301,15 +301,15 @@ export default function DateDonationForm() {
                   } outline-none`}
                   placeholder="05xxxxxxxx"
                   maxLength="10"
-                  dir="rtl"
+                  dir="ltr"
                 />
                 {formData.phoneNumber && (
-                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm">
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm">
                     {validatePhoneNumber(formData.phoneNumber) ? (
-                      <span className="text-green-600">✓ رقم صحيح</span>
+                      <span className="text-green-600">✓ Valid number</span>
                     ) : (
                       <span className="text-gray-500">
-                        {10 - formData.phoneNumber.length} أرقام متبقية
+                        {10 - formData.phoneNumber.length} digits remaining
                       </span>
                     )}
                   </span>
@@ -317,14 +317,14 @@ export default function DateDonationForm() {
               </div>
               {touched.phoneNumber && !validatePhoneNumber(formData.phoneNumber) && (
                 <p className="text-sm text-red-500">
-                  يجب أن يبدأ رقم الجوال بـ 05 وأن يتكون من 10 أرقام
+                  Mobile number must start with 05 and be 10 digits long
                 </p>
               )}
             </div>
 
             {/* Image Upload */}
             <div className="space-y-2">
-              <label className="block text-lg font-medium text-gray-700">الصور</label>
+              <label className="block text-lg font-medium text-gray-700">Images</label>
               <div className="grid grid-cols-3 md:grid-cols-4 gap-3">
                 {/* Image Preview */}
                 {previewUrls.map((url, index) => (
@@ -350,7 +350,7 @@ export default function DateDonationForm() {
                   </motion.div>
                 ))}
                 
-                {/* Upload Button - Show only if less than 4 images */}
+                {/* Upload Button */}
                 {previewUrls.length < 4 && (
                   <motion.label
                     whileHover={{ scale: 1.02 }}
@@ -359,7 +359,7 @@ export default function DateDonationForm() {
                   >
                     <FiCamera className="w-6 h-6 mb-1" />
                     <span className="text-xs sm:text-sm text-center px-2">
-                      {previewUrls.length === 0 ? 'إضافة صور' : 'إضافة المزيد'}
+                      {previewUrls.length === 0 ? 'Add Images' : 'Add More'}
                     </span>
                     <input
                       type="file"
@@ -375,11 +375,11 @@ export default function DateDonationForm() {
                 <p className="text-red-500 text-sm">{errors.images}</p>
               )}
               <p className="text-xs text-gray-500 mt-1">
-                يمكنك رفع حتى 4 صور • الحد الأقصى 5 ميجابايت لكل صورة
+                Upload up to 4 images • Maximum 5MB per image
               </p>
             </div>
 
-            {/* Submit Button - Update padding for better mobile touch target */}
+            {/* Submit Button */}
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
@@ -390,7 +390,7 @@ export default function DateDonationForm() {
               }`}
             >
               {isSubmitting ? (
-                <div className="flex items-center justify-center space-x-reverse space-x-2">
+                <div className="flex items-center justify-center space-x-2">
                   <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
                     <circle 
                       className="opacity-25" 
@@ -407,10 +407,10 @@ export default function DateDonationForm() {
                       d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" 
                     />
                   </svg>
-                  <span>جاري الإرسال...</span>
+                  <span>Submitting...</span>
                 </div>
               ) : (
-                'إرسال'
+                'Submit'
               )}
             </motion.button>
           </motion.form>
@@ -418,4 +418,4 @@ export default function DateDonationForm() {
       </AnimatePresence>
     </div>
   );
-} 
+}

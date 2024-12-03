@@ -9,13 +9,13 @@ export async function generateMetadata({ params }) {
   
   if (!org) {
     return {
-      title: 'الصفحة غير موجودة'
+      title: 'Page Not Found'
     };
   }
 
   return {
-    title: `${org.name} - خير`,
-    description: `صفحة التبرعات الخاصة بـ ${org.name}`
+    title: `${org.name} - Khair`,
+    description: `Donation page for ${org.name}`
   };
 }
 
