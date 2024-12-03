@@ -1,0 +1,40 @@
+{
+  "name": "carity_d7d7",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.678.0",
+    "@aws-sdk/client-s3": "^3.682.0",
+    "@aws-sdk/client-ses": "^3.678.0",
+    "@aws-sdk/lib-dynamodb": "^3.678.0",
+    "@vercel/blob": "^0.25.1",
+    "bcryptjs": "^2.4.3",
+    "chart.js": "^4.4.5",
+    "date-fns": "^4.1.0",
+    "exceljs": "^4.4.0",
+    "framer-motion": "^11.11.10",
+    "jose": "^5.9.6",
+    "jsonwebtoken": "^9.0.2",
+    "lodash": "^4.17.21",
+    "lucide-react": "^0.454.0",
+    "next": "14.2.3",
+    "react": "^18",
+    "react-dom": "^18",
+    "react-hot-toast": "^2.4.1",
+    "react-icons": "^5.3.0",
+    "recharts": "^2.13.1",
+    "sharp": "^0.33.5"
+  },
+  "devDependencies": {
+    "eslint": "^8",
+    "eslint-config-next": "14.2.3",
+    "postcss": "^8",
+    "tailwindcss": "^3.4.1"
+  }
+}
