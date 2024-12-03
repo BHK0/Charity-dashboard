@@ -333,7 +333,7 @@ export default function CreateOrgButton({ onOptimisticAdd }) {
                   <label className="block text-sm font-medium text-gray-700 mb-1">Custom URL</label>
                   <div className="flex items-center w-full">
                     <div className="bg-gray-100 text-gray-500 h-10 px-3 py-2 rounded-l-lg border border-r-0 border-gray-300 whitespace-nowrap text-sm">
-                      https://charity-dashboard.vercel.app/
+                      https://charity-dashboard-orcin.vercel.app/
                     </div>
                     <input
                       type="text"

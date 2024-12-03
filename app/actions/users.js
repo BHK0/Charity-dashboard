@@ -60,7 +60,7 @@ export async function sendUserInvitation(email) {
                   <h2 style="color: #998966;">Invitation to Join Organization Management Dashboard</h2>
                   <p>Hello,</p>
                   <p>You have been invited to join the Organization Management Dashboard. Please click the link below to set up your password and access the dashboard:</p>
-                  <a href="https://charity-dashboard.vercel.app/setup-password?token=${token}" style="display: inline-block; margin-top: 20px; padding: 10px 20px; background-color: #998966; color: white; text-decoration: none; border-radius: 5px;">Set Up Password</a>
+                  <a href="https://charity-dashboard-orcin.vercel.app/setup-password?token=${token}" style="display: inline-block; margin-top: 20px; padding: 10px 20px; background-color: #998966; color: white; text-decoration: none; border-radius: 5px;">Set Up Password</a>
                   <p style="margin-top: 20px;">If you did not request this invitation, you can ignore this email.</p>
                 </td>
               </tr>

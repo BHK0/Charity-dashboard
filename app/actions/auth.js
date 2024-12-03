@@ -184,7 +184,7 @@ export async function forgotPassword(email) {
               <h2 style="color: #998966;">Password Reset</h2>
               <p>We received a request to reset your password.</p>
               <p>Please click the link below to reset your password:</p>
-              <a href="https://charity-dashboard.vercel.app/reset-password?token=${token}" 
+              <a href="https://charity-dashboard-orcin.vercel.app/reset-password?token=${token}" 
                  style="display: inline-block; padding: 10px 20px; background-color: #998966; color: white; text-decoration: none; border-radius: 5px;">
                 Reset Password
               </a>
