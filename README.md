@@ -11,6 +11,7 @@ A full-stack Next.js application for managing charitable donations with separate
 - Support for multiple donation types (Monetary/Dates)
 - Real-time form validation
 - Anonymous donation option
+- Rate limiting and honeypot fields for spam protection
 
 ### For Administrators
 - Comprehensive dashboard for organization management
@@ -31,17 +32,6 @@ A full-stack Next.js application for managing charitable donations with separate
 - **Email**: AWS SES
 - **Styling**: TailwindCSS with custom configurations
 - **Charts**: Chart.js, Recharts
-
-## 🔧 Core Dependencies
-{
-"next": "14.2.3",
-"react": "^18",
-"tailwindcss": "^3.4.1",
-"@aws-sdk/client-dynamodb": "^3.678.0",
-"@vercel/blob": "^0.25.1",
-"chart.js": "^4.4.5",
-"framer-motion": "^11.11.10"
-}
 
 ## 🚀 Getting Started
 
