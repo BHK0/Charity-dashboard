@@ -78,9 +78,9 @@ export default function FarmersManagementClient({ initialDonations }) {
               className="h-10 flex-1 px-4 border border-gray-300 rounded-lg focus:ring-[#998966] focus:border-[#998966]"
             >
               <option value="all">All Types</option>
-              <option value="zakat">Zakat</option>
-              <option value="sadaqah">Sadaqah</option>
-              <option value="gift">Gift</option>
+              <option value="زكاة">Zakat</option>
+              <option value="صدقة">Sadaqah</option>
+              <option value="هبة">Gift</option>
             </select>
           </div>
 
