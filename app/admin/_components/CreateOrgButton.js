@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import { createOrganizationWithOptimistic } from '@/app/actions/organizations';
 import { useFormState, useFormStatus } from 'react-dom';
+import { motion, AnimatePresence } from 'framer-motion';
 
 // Reuse the DonationChoicesEditor component
 function DonationChoicesEditor({ choices, onChange }) {
@@ -248,151 +249,160 @@ export default function CreateOrgButton({ onOptimisticAdd }) {
         Add New Organization
       </button>
 
-      {isModalOpen && (
-        <div className="fixed inset-0 z-50">
-          <div 
-            className="absolute inset-0 bg-black bg-opacity-50"
-            onClick={() => setIsModalOpen(false)}
-          />
-          
-          <div className="absolute inset-0 flex items-center justify-center p-4">
-            <form
-              action={formAction}
-              className="bg-white rounded-lg w-full max-w-md max-h-[90vh] overflow-y-auto"
-              onClick={(e) => e.stopPropagation()}
-            >
-              {/* Header */}
-              <div className="sticky top-0 bg-white px-6 py-4 border-b border-gray-200">
-                <h3 className="text-xl font-semibold text-[#998966]">Add New Organization</h3>
-              </div>
-
-              {/* Form Content */}
-              <div className="p-6 space-y-4">
-                {/* Logo Upload */}
-                <div>
-                  <input
-                    type="hidden"
-                    name="logo"
-                    value={formData.logo}
-                    required
-                  />
-                  <div
-                    className="w-24 h-24 md:w-32 md:h-32 mx-auto border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center relative overflow-hidden cursor-pointer"
-                    onClick={() => fileInputRef.current?.click()}
-                  >
-                    {isUploading ? (
-                      <div className="text-center">
-                        <svg className="animate-spin h-8 w-8 text-gray-400" viewBox="0 0 24 24">
-                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
-                        </svg>
-                      </div>
-                    ) : previewUrl ? (
-                      <Image
-                        src={previewUrl}
-                        alt="Logo preview"
-                        layout="fill"
-                        objectFit="contain"
-                        className="object-contain scale-80"
-                      />
-                    ) : (
-                      <div className="text-center p-2">
-                        <svg className="mx-auto h-8 w-8 md:h-12 md:w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48">
-                          <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                        </svg>
-                        <p className="mt-1 text-xs md:text-sm text-gray-500 break-words text-center">
-                          Choose organization logo
-                        </p>
-                      </div>
-                    )}
-                  </div>
-                  <input
-                    type="file"
-                    ref={fileInputRef}
-                    onChange={handleFileUpload}
-                    accept="image/png"
-                    className="hidden"
-                  />
+      <AnimatePresence>
+        {isModalOpen && (
+          <div className="fixed inset-0 z-50">
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="absolute inset-0 bg-black bg-opacity-50"
+              onClick={() => setIsModalOpen(false)}
+            />
+            
+            <div className="absolute inset-0 flex items-center justify-center p-4">
+              <motion.form
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                transition={{ duration: 0.2 }}
+                action={formAction}
+                className="bg-white rounded-lg w-full max-w-md max-h-[90vh] overflow-y-auto"
+                onClick={(e) => e.stopPropagation()}
+              >
+                {/* Header */}
+                <div className="sticky top-0 bg-white px-6 py-4 border-b border-gray-200">
+                  <h3 className="text-xl font-semibold text-[#998966]">Add New Organization</h3>
                 </div>
 
-                {/* Organization Name */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Organization Name</label>
-                  <input
-                    type="text"
-                    name="name"
-                    value={formData.name}
-                    onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-[#998966] focus:border-[#998966]"
-                    required
-                  />
-                </div>
-
-                {/* Custom URL */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Custom URL</label>
-                  <div className="flex items-center w-full">
-                    <div className="bg-gray-100 text-gray-500 h-10 px-3 py-2 rounded-l-lg border border-r-0 border-gray-300 whitespace-nowrap text-sm">
-                      https://charity-dashboard-orcin.vercel.app/
+                {/* Form Content */}
+                <div className="p-6 space-y-4">
+                  {/* Logo Upload */}
+                  <div>
+                    <input
+                      type="hidden"
+                      name="logo"
+                      value={formData.logo}
+                      required
+                    />
+                    <div
+                      className="w-24 h-24 md:w-32 md:h-32 mx-auto border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center relative overflow-hidden cursor-pointer"
+                      onClick={() => fileInputRef.current?.click()}
+                    >
+                      {isUploading ? (
+                        <div className="text-center">
+                          <svg className="animate-spin h-8 w-8 text-gray-400" viewBox="0 0 24 24">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+                          </svg>
+                        </div>
+                      ) : previewUrl ? (
+                        <Image
+                          src={previewUrl}
+                          alt="Logo preview"
+                          layout="fill"
+                          objectFit="contain"
+                          className="object-contain scale-80"
+                        />
+                      ) : (
+                        <div className="text-center p-2">
+                          <svg className="mx-auto h-8 w-8 md:h-12 md:w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48">
+                            <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                          </svg>
+                          <p className="mt-1 text-xs md:text-sm text-gray-500 break-words text-center">
+                            Choose organization logo
+                          </p>
+                        </div>
+                      )}
                     </div>
                     <input
+                      type="file"
+                      ref={fileInputRef}
+                      onChange={handleFileUpload}
+                      accept="image/png"
+                      className="hidden"
+                    />
+                  </div>
+
+                  {/* Organization Name */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Organization Name</label>
+                    <input
                       type="text"
-                      name="customUrl"
-                      value={formData.customUrl}
-                      onChange={(e) => {
-                        const value = e.target.value.toLowerCase().replace(/[^a-z0-9]/g, '');
-                        setFormData(prev => ({ ...prev, customUrl: value }));
-                      }}
-                      className="flex-1 px-3 w-full py-2 border h-10 border-gray-300 rounded-r-lg focus:ring-[#998966] focus:border-[#998966]"
+                      name="name"
+                      value={formData.name}
+                      onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-[#998966] focus:border-[#998966]"
                       required
+                    />
+                  </div>
+
+                  {/* Custom URL */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Custom URL</label>
+                    <div className="flex items-center w-full">
+                      <div className="bg-gray-100 text-gray-500 h-10 px-3 py-2 rounded-l-lg border border-r-0 border-gray-300 whitespace-nowrap text-sm">
+                        https://charity-dashboard-orcin.vercel.app/
+                      </div>
+                      <input
+                        type="text"
+                        name="customUrl"
+                        value={formData.customUrl}
+                        onChange={(e) => {
+                          const value = e.target.value.toLowerCase().replace(/[^a-z0-9]/g, '');
+                          setFormData(prev => ({ ...prev, customUrl: value }));
+                        }}
+                        className="flex-1 px-3 w-full py-2 border h-10 border-gray-300 rounded-r-lg focus:ring-[#998966] focus:border-[#998966]"
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  {/* Donation Choices */}
+                  <div>
+                    <input
+                      type="hidden"
+                      name="donationChoices"
+                      value={JSON.stringify(formData.donationChoices)}
+                    />
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Donation Options</label>
+                    <DonationChoicesEditor
+                      choices={formData.donationChoices}
+                      onChange={(newChoices) => setFormData(prev => ({
+                        ...prev,
+                        donationChoices: newChoices
+                      }))}
                     />
                   </div>
                 </div>
 
-                {/* Donation Choices */}
-                <div>
-                  <input
-                    type="hidden"
-                    name="donationChoices"
-                    value={JSON.stringify(formData.donationChoices)}
-                  />
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Donation Options</label>
-                  <DonationChoicesEditor
-                    choices={formData.donationChoices}
-                    onChange={(newChoices) => setFormData(prev => ({
-                      ...prev,
-                      donationChoices: newChoices
-                    }))}
-                  />
-                </div>
-              </div>
+                {/* Error message */}
+                {state?.errors?.submit && (
+                  <div className="px-6 pb-4">
+                    <div className="p-4 text-red-500 bg-red-50 rounded-lg">
+                      {state.errors.submit}
+                    </div>
+                  </div>
+                )}
 
-              {/* Error message */}
-              {state?.errors?.submit && (
-                <div className="px-6 pb-4">
-                  <div className="p-4 text-red-500 bg-red-50 rounded-lg">
-                    {state.errors.submit}
+                {/* Footer */}
+                <div className="sticky bottom-0 bg-white px-6 py-4 border-t border-gray-200">
+                  <div className="grid grid-cols-2 gap-2">
+                    <button
+                      type="button"
+                      onClick={() => setIsModalOpen(false)}
+                      className="bg-gray-100 text-gray-800 px-4 py-2.5 rounded-lg hover:bg-gray-200"
+                    >
+                      Cancel
+                    </button>
+                    <SubmitButton />
                   </div>
                 </div>
-              )}
-
-              {/* Footer */}
-              <div className="sticky bottom-0 bg-white px-6 py-4 border-t border-gray-200">
-                <div className="grid grid-cols-2 gap-2">
-                  <button
-                    type="button"
-                    onClick={() => setIsModalOpen(false)}
-                    className="bg-gray-100 text-gray-800 px-4 py-2.5 rounded-lg hover:bg-gray-200"
-                  >
-                    Cancel
-                  </button>
-                  <SubmitButton />
-                </div>
-              </div>
-            </form>
+              </motion.form>
+            </div>
           </div>
-        </div>
-      )}
+        )}
+      </AnimatePresence>
     </>
   );
 }
