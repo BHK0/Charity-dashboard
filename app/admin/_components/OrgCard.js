@@ -10,6 +10,8 @@ import { updateOrganization, deleteOrganization } from '@/app/actions/organizati
 import { formatDistanceToNow } from 'date-fns';
 import { ar } from 'date-fns/locale';
 import { deleteBlob } from '@/app/actions/blobs';
+import { canManageOrg } from '@/app/utils/authHelpers';
+import { toast } from 'react-hot-toast';
 
 function DonationChoicesEditor({ choices, onChange }) {
   const [newAmount, setNewAmount] = useState('');
@@ -66,10 +68,11 @@ function DonationChoicesEditor({ choices, onChange }) {
   );
 }
 
-export default function OrgCard({ organization, donations, onUpdate, onDelete, isOptimistic }) {
+export default function OrgCard({ organization, donations, onUpdate, onDelete, isOptimistic, userEmail }) {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
+  const [authError, setAuthError] = useState('');
   const fileInputRef = useRef(null);
   const [editData, setEditData] = useState({
     name: organization.name,
@@ -205,6 +208,22 @@ export default function OrgCard({ organization, donations, onUpdate, onDelete, i
     }
   }, [organization.logo, orgId]);
 
+  const handleEditClick = () => {
+    if (!canManageOrg(userEmail, orgId)) {
+      toast.error("You're not authorized to edit this organization");
+      return;
+    }
+    setIsEditModalOpen(true);
+  };
+
+  const handleDeleteClick = () => {
+    if (!canManageOrg(userEmail, orgId)) {
+      toast.error("You're not authorized to delete this organization");
+      return;
+    }
+    setIsDeleteModalOpen(true);
+  };
+
   return (
     <motion.div
       variants={cardVariants}
@@ -259,13 +278,13 @@ export default function OrgCard({ organization, donations, onUpdate, onDelete, i
           View Page
         </Link>
         <button
-          onClick={() => setIsEditModalOpen(true)}
+          onClick={handleEditClick}
           className="bg-[#f8f7f8] text-[#998966] px-4 py-2 rounded hover:bg-gray-200 transition-colors text-sm"
         >
           Edit
         </button>
         <button
-          onClick={() => setIsDeleteModalOpen(true)}
+          onClick={handleDeleteClick}
           className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition-colors text-sm"
         >
           Delete
@@ -331,7 +350,7 @@ export default function OrgCard({ organization, donations, onUpdate, onDelete, i
                 <label className="block text-sm font-medium text-gray-700 mb-1">Custom URL</label>
                 <div className="flex items-center w-full">
                   <div className="bg-gray-100 text-gray-500 h-10 px-3 py-2 rounded-l-lg border border-r-0 border-gray-300 whitespace-nowrap text-sm">
-                    https://www.khaircharity.com/
+                    https://charity-dashboard-orcin.vercel.app/
                   </div>
                   <input
                     type="text"

@@ -10,7 +10,9 @@ function AdminDashboardClientBase({
   initialOrganizations, 
   initialDonationsMap,
   showOnlyButton, 
-  showOnlyContent 
+  showOnlyContent,
+  userEmail,
+  isLoading
 }) {
   // Use optimistic state for organizations
   const [optimisticOrgs, addOptimisticOrg] = useOptimistic(
@@ -53,6 +55,7 @@ function AdminDashboardClientBase({
                   organization={org}
                   donations={initialDonationsMap[orgId] || []}
                   isOptimistic={org._isOptimistic}
+                  userEmail={userEmail}
                 />
               </motion.div>
             );

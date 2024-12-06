@@ -6,6 +6,7 @@ export default function withAuth(Component) {
     const router = useRouter();
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
+    const [userEmail, setUserEmail] = useState(null);
 
     useEffect(() => {
       const checkAuth = async () => {
@@ -30,7 +31,7 @@ export default function withAuth(Component) {
 
           const data = await response.json();
           
-          if (!data.valid) {
+          if (!data.valid || !data.user?.email) {
             console.log('Token validation failed');
             document.cookie = 'token=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT';
             setIsLoading(false);
@@ -39,6 +40,7 @@ export default function withAuth(Component) {
           }
 
           console.log('Token validated successfully');
+          setUserEmail(data.user.email);
           setIsAuthenticated(true);
           setIsLoading(false);
         } catch (error) {
@@ -52,7 +54,6 @@ export default function withAuth(Component) {
     }, [router]);
 
     if (isLoading) {
-      // Instead of showing a loading spinner, pass the loading state to the component
       return <Component {...props} isLoading={true} />;
     }
 
@@ -60,6 +61,6 @@ export default function withAuth(Component) {
       return null;
     }
 
-    return <Component {...props} isLoading={false} />;
+    return <Component {...props} isLoading={false} userEmail={userEmail} />;
   };
 }

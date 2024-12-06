@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { login } from '../actions/auth';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
@@ -12,7 +12,7 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = useCallback(async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
 
@@ -30,7 +30,12 @@ export default function LoginPage() {
     } finally {
       setIsSubmitting(false);
     }
-  };
+  }, [email, password, router]);
+
+  useEffect(() => {
+    setEmail('example@email.com');
+    setPassword('example');
+  }, []);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#f8f7f8]">
